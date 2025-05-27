@@ -51,7 +51,7 @@ async function cargarVentas() {
             <td>${v.clientes}</td>
             <td>${v.productos}</td>
             <td>${v.cantidad}</td>
-            <td>${v.precio_unitario}</td>
+            <td>${v.precio}</td>
             <td>${v.total}</td>
             <td>${new Date(v.fecha).toLocaleString('es-ES', {
             year: 'numeric',

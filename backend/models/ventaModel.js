@@ -2,7 +2,7 @@ import { db } from  '../config/db.js';
 
 export const registrarVenta = (venta, callback) => {
     const{ id_cliente, id_producto , cantidad} = venta;
-    db.query('select precio, stock form productos where id = ?', [id_producto], (err,results) => {
+    db.query('select precio, stock from productos where id = ?', [id_producto], (err,results) => {
         if (err) return callback(err);
         if (results.length === 0) {
             return callback(new Error('Producto no encontrado'));
@@ -13,8 +13,8 @@ export const registrarVenta = (venta, callback) => {
         }
         const total = precio * cantidad;
         db.query(
-            'insert into ventas (id_cliente, id_producto, cantidad, precio_unitario, total) values(?,?,?,?,?)',
-            [id_cliente, id_producto, cantidad, precio_unitario, total],
+            'insert into ventas (id_cliente, id_producto, cantidad, precio, total) values(?,?,?,?,?)',
+            [id_cliente, id_producto, cantidad, precio, total],
             (err, resultado) => {
                 if(err) return callback(err);
                 // actualizar el stock de productos
@@ -32,7 +32,7 @@ export const obtenerVentas = (callback) => {
         select v.id, 
         c.nombre as clientes, 
         p.nombre_prod as productos,
-        v.cantidad, v.precio_unitario, v.total, v.fecha
+        v.cantidad, v.precio, v.total, v.fecha
         from ventas v
         join clientes c on v.id_cliente = c.id
         join productos p on v.id_producto = p.id
